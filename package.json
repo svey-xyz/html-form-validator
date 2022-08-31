@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/svey-xyz/node-form-validator.git"
+    "url": "git+https://github.com/svey-xyz/html-form-validator.git"
   },
   "keywords": [
     "form",
@@ -20,7 +20,7 @@
   "author": "svey.xyz",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/svey-xyz/node-form-validator/issues"
+    "url": "https://github.com/svey-xyz/html-form-validator/issues"
   },
-  "homepage": "https://github.com/svey-xyz/node-form-validator#readme"
+  "homepage": "https://github.com/svey-xyz/html-form-validator#readme"
 }
