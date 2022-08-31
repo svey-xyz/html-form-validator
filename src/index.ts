@@ -1,4 +1,4 @@
-import { field, inputFieldArgs } from './src/fieldValidation';
+import { field, inputFieldArgs } from './handlers/fieldValidation';
 let responseMessageContainer: HTMLElement
 
 

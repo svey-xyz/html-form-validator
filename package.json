@@ -1,26 +1,31 @@
 {
-  "name": "node-form-validator",
-  "version": "0.0.2",
-  "description": "Validate forms using a set of predefined rules, or write custom rules to integrate.",
-  "main": "/src/index.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/svey-xyz/html-form-validator.git"
-  },
-  "keywords": [
-    "form",
-    "validation",
-    "input",
-    "html-form",
-    "validator"
-  ],
-  "author": "svey.xyz",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/svey-xyz/html-form-validator/issues"
-  },
-  "homepage": "https://github.com/svey-xyz/html-form-validator#readme"
+	"name": "node-form-validator",
+	"version": "0.0.2",
+	"description": "Validate forms using a set of predefined rules, or write custom rules to integrate.",
+	"main": "dist/cjs/index.js",
+	"module": "dist/mjs/index.js",
+	"scripts": {
+		"build": "rm -fr dist/* && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && ./fixup",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/svey-xyz/html-form-validator.git"
+	},
+	"keywords": [
+		"form",
+		"validation",
+		"input",
+		"html-form",
+		"validator"
+	],
+	"author": "svey.xyz",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/svey-xyz/html-form-validator/issues"
+	},
+	"homepage": "https://github.com/svey-xyz/html-form-validator#readme",
+	"dependencies": {
+		"typescript": "^4.8.2"
+	}
 }
