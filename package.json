@@ -5,13 +5,14 @@
 	"main": "dist/cjs/index.js",
 	"module": "dist/mjs/index.js",
 	"scripts": {
-		"build": "rm -fr dist/* && tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && ./fixup",
+		"build": "rm -fr dist/* && tsc -p config/tsconfig-mjs.json && tsc -p config/tsconfig-cjs.json && ./fixup",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"exports": {
 		".": {
 			"import": "./dist/mjs/index.js",
-			"require": "./dist/cjs/index.js"
+			"require": "./dist/cjs/index.js",
+			"types": "./dist/index.d.ts"
 		}
 	},
 	"repository": {
