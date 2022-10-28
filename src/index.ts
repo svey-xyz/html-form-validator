@@ -1,6 +1,4 @@
-import { field, inputFieldArgs } from './handlers/fieldValidation';
-let responseMessageContainer: HTMLElement
-
+import { field } from './handlers/fieldValidation';
 
 export default class formValidator {
 	private formContainer: HTMLFormElement
@@ -50,11 +48,10 @@ export default class formValidator {
 	 *
 	 *
 	 * @param {HTMLElement} inputField
-	 * @param {inputFieldArgs} args
 	 * @memberof formValidator
 	 */
-	private addField(inputField: HTMLInputElement, args?: inputFieldArgs) {
-		this.fields.push(new field(inputField, args))
+	private addField(inputField: HTMLInputElement) {
+		this.fields.push(new field(inputField, this))
 	}
 
 	public set setHoneyPotField(honeyPotField: HTMLInputElement) {
