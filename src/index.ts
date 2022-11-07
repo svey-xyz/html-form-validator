@@ -1,9 +1,11 @@
 import { field } from './handlers/fieldValidation';
 
+type error = {message: string, priority: number}
+
 export default class formValidator {
 	private formContainer: HTMLFormElement
 	private submitButton?: HTMLButtonElement
-	private honeyPot?: HTMLInputElement
+	private honeyPot: HTMLInputElement | null
 	private recaptchaKey?: string
 	private fields: Array<field> = new Array
 	private validity: boolean = false;
@@ -25,6 +27,8 @@ export default class formValidator {
 		this.recaptchaKey = recaptchaKey
 
 		this.formContainer.setAttribute('novalidate', 'true');
+
+		this.honeyPot = this.formContainer.querySelector('.vxlid-honeypot')
 
 		for (const field of this.formContainer.querySelectorAll('.validator-field-validation')) {
 			this.addField(<HTMLInputElement>field)
@@ -77,6 +81,10 @@ export default class formValidator {
 
 	public get getRecaptchaKey(): string | undefined {
 		return this.recaptchaKey;
+	}
+
+	public get getHoneyPot(): HTMLInputElement | null {
+		return this.honeyPot;
 	}
 	
 }

@@ -15,7 +15,7 @@ export async function submitForm(e: Event, form: formValidator) {
 		formData.append('token', token)
 	}
 
-	// if (form.honeyPot?.value !== '') form.updateValidity(false);
+	if (form.getHoneyPot?.value !== '') form.updateValidity = false;
 
 
 	// const url = form.formContainer.getAttribute('action')!;
@@ -28,8 +28,6 @@ export async function submitForm(e: Event, form: formValidator) {
 	for (let [key, prop] of formData) {
 		data[key] = prop;
 	}
-
-	// request.onreadystatechange = 
 
 	//Send the proper header information along with the request
 	request.setRequestHeader("Content-type", "application/json");
