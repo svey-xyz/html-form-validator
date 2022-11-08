@@ -35,11 +35,15 @@ export class field {
 
 		this.htmlField.addEventListener('blur', this.inputHandler)
 
-		let htmlRules: string|Array<string> = this.htmlField.getAttribute('vldx-rules') !== null ? this.htmlField.getAttribute('rules')! : ''
-		htmlRules = (htmlRules.replace(/\s+/g, '')).split('|');
-		for (const ruleName of htmlRules) {
-			if (baseRules.has(ruleName)) this.rules.set(ruleName, baseRules.get(ruleName)!)
-			else console.log('An invalid rule has been provided.')
+
+		if (this.htmlField.hasAttribute('vldx-rules')) { 
+			let htmlRules: string = this.htmlField.getAttribute('vldx-rules')
+			htmlRules = (htmlRules?.replace(/\s+/g, ''));
+			
+			for (const ruleName of htmlRules?.split(`|`)) {
+				if (baseRules.has(ruleName)) this.rules.set(ruleName, baseRules.get(ruleName)!)
+				else console.log('An invalid rule has been provided.')
+			}
 		}
 	}
 

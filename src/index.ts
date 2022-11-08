@@ -11,7 +11,9 @@ export default class formValidator {
 	private validity: boolean = false;
 	
 	buttonHandler: (e: Event) => void;
-	buttonInput(e: Event): void { };
+	buttonInput(e: Event): void { 
+		console.log('submitted')
+	};
 
 	/**
 	 * Creates a Contact Form Validator instance.
@@ -31,8 +33,10 @@ export default class formValidator {
 		this.honeyPot = this.formContainer.querySelector('.vldx-honeypot')
 
 		for (const field of this.formContainer.querySelectorAll('.vldx-field')) {
-			this.addField(<HTMLInputElement>field)
+			this.addField(field as HTMLInputElement)
 		}
+
+		this.addSubmissionButton(this.formContainer.querySelector('.vldx-submit') as HTMLButtonElement)
 	}
 
 	/**
@@ -73,7 +77,6 @@ export default class formValidator {
 	public get getFields(): Array<field> {
 		return this.fields;
 	}
-
 	
 	public get getFormContainer(): HTMLFormElement {
 		return this.formContainer;
