@@ -28,9 +28,9 @@ export default class formValidator {
 
 		this.formContainer.setAttribute('novalidate', 'true');
 
-		this.honeyPot = this.formContainer.querySelector('.vxlid-honeypot')
+		this.honeyPot = this.formContainer.querySelector('.vldx-honeypot')
 
-		for (const field of this.formContainer.querySelectorAll('.validator-field-validation')) {
+		for (const field of this.formContainer.querySelectorAll('.vldx-field')) {
 			this.addField(<HTMLInputElement>field)
 		}
 	}
