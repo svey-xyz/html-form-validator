@@ -2,16 +2,18 @@
 	"name": "node-form-validator",
 	"version": "0.0.2",
 	"description": "Validate forms using a set of predefined rules, or write custom rules to integrate.",
-	"main": "dist/cjs/index.js",
-	"module": "dist/mjs/index.js",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
 	"scripts": {
-		"build": "rm -fr dist/* && tsc -p config/tsconfig-mjs.json && tsc -p config/tsconfig-cjs.json && ./fixup",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"build": "tsup src/index.ts --format cjs,esm --dts --clean",
+		"watch": "npm run build -- --watch src",
+		"prepublishOnly": "npm run build"
 	},
 	"exports": {
 		".": {
-			"import": "./dist/mjs/index.js",
-			"require": "./dist/cjs/index.js",
+			"import": "./dist/index.js",
+			"require": "./dist/index.mjs",
 			"types": "./dist/index.d.ts"
 		}
 	},
@@ -33,6 +35,7 @@
 	},
 	"homepage": "https://github.com/svey-xyz/html-form-validator#readme",
 	"dependencies": {
+		"tsup": "^6.4.0",
 		"typescript": "^4.8.2"
 	}
 }
