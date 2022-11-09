@@ -1,7 +1,9 @@
 import { field } from './handlers/fieldValidation';
 import { submitForm } from './handlers/submitForm'
 
-type error = {message: string, priority: number}
+export type customValidatorFunction = ((inputField: field) => boolean)
+export type error = { priority: number, message: string }
+export type rule = { validator: customValidatorFunction, error: error }
 
 export default class formValidator {
 	private formContainer: HTMLFormElement
@@ -9,7 +11,9 @@ export default class formValidator {
 	private honeyPot: HTMLInputElement | null
 	private recaptchaKey?: string
 	private fields: Array<field> = new Array
-	private validity: boolean = false;
+	private validity: boolean = true;
+
+	private errors: Map<string, error> = new Map
 	
 	buttonHandler: (e: Event) => void;
 	buttonInput(e: Event): void { 
@@ -67,8 +71,11 @@ export default class formValidator {
 		this.honeyPot = honeyPotField;
 	}
 
-	public set updateValidity(validity: boolean) {
-		this.validity = this.validity && validity ? true : false;
+	public updateErrors(source: string, error?: error) {
+		if (typeof error !== 'undefined') this.errors.set(source, error);
+		else if (this.errors.has(source)) this.errors.delete(source);
+
+		this.validity = this.errors.size !> 0;
 	}
 
 	public get getValiditiy() {

@@ -1,8 +1,4 @@
-import formValidator from "../index";
-
-export type customValidatorFunction = ((inputField: field) => boolean)
-type error = { priority: number, message: string }
-type rule = { validator: customValidatorFunction, error: error }
+import formValidator, { rule, error } from "../index";
 
 
 let baseRules: Map<string, rule> = new Map()
@@ -58,25 +54,19 @@ export class field {
 		else console.error('This field already has a rule with that name.')
 	}
 
-	public fieldValidation(): boolean {
-		let validity: boolean = true;
-		let errorMessage: string = ''
-		let loggedPriority: number = 0;
-
+	public fieldValidation(): void {
+		let loggedError: error | undefined
 
 		this.rules.forEach((rule) => {
-			validity = validity && rule.validator.call(this, this) ? true : false;
-			let error = rule.error
-			if (!validity && error.priority > loggedPriority ) {
-				loggedPriority = error.priority
-				errorMessage = error.message
+			if (!rule.validator.call(this, this) &&
+				(rule.error.priority > loggedError?.priority || rule.error.priority > 0)) {
+				loggedError = rule.error
 			}
 		});
 
-		this.htmlField.setCustomValidity(errorMessage)
+		this.htmlField.setCustomValidity(loggedError?.message ? loggedError!.message : '')
 		this.htmlField.reportValidity()
-		this.form.updateValidity = validity;
-		return validity;
+		this.form.updateErrors(this.htmlField.id, loggedError);
 	}
 
 	public get getHTMLField(): HTMLInputElement {

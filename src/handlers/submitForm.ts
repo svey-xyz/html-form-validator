@@ -5,19 +5,20 @@ export async function submitForm(e: Event, form: formValidator) {
 	e.preventDefault();
 	e.stopPropagation();
 
-	console.log(form)
+	const formData = new FormData(form.getFormContainer);
 
-	// const formData = new FormData(form.getFormContainer);
+	if (typeof form.getRecaptchaKey !== 'undefined') {
+		const recaptchaKey: string = form.getRecaptchaKey;
+		const recaptcha = await load(recaptchaKey, { autoHideBadge: true })
+		const token = await recaptcha.execute('submit')
 
-	// if (typeof form.getRecaptchaKey !== 'undefined') {
-	// 	const recaptchaKey: string = form.getRecaptchaKey;
-	// 	const recaptcha = await load(recaptchaKey, { autoHideBadge: true })
-	// 	const token = await recaptcha.execute('submit')
+		formData.append('token', token)
+	}
 
-	// 	formData.append('token', token)
-	// }
+	console.log(formData)
 
-	// if (form.getHoneyPot?.value !== '') form.updateValidity = false;
+
+	if (form.getHoneyPot?.value !== '') form.updateValidity = false;
 
 
 	// // const url = form.formContainer.getAttribute('action')!;
