@@ -5,31 +5,33 @@ export async function submitForm(e: Event, form: formValidator) {
 	e.preventDefault();
 	e.stopPropagation();
 
-	const formData = new FormData(form.getFormContainer);
+	console.log(form)
 
-	if (typeof form.getRecaptchaKey !== 'undefined') {
-		const recaptchaKey: string = form.getRecaptchaKey;
-		const recaptcha = await load(recaptchaKey, { autoHideBadge: true })
-		const token = await recaptcha.execute('submit')
+	// const formData = new FormData(form.getFormContainer);
 
-		formData.append('token', token)
-	}
+	// if (typeof form.getRecaptchaKey !== 'undefined') {
+	// 	const recaptchaKey: string = form.getRecaptchaKey;
+	// 	const recaptcha = await load(recaptchaKey, { autoHideBadge: true })
+	// 	const token = await recaptcha.execute('submit')
 
-	if (form.getHoneyPot?.value !== '') form.updateValidity = false;
+	// 	formData.append('token', token)
+	// }
+
+	// if (form.getHoneyPot?.value !== '') form.updateValidity = false;
 
 
-	// const url = form.formContainer.getAttribute('action')!;
-	const request = new XMLHttpRequest();
-	request.responseType = "json"
-	// request.open("POST", url, true);
+	// // const url = form.formContainer.getAttribute('action')!;
+	// const request = new XMLHttpRequest();
+	// request.responseType = "json"
+	// // request.open("POST", url, true);
 
-	let data: any = {};
+	// let data: any = {};
 
-	for (let [key, prop] of formData) {
-		data[key] = prop;
-	}
+	// for (let [key, prop] of formData) {
+	// 	data[key] = prop;
+	// }
 
-	//Send the proper header information along with the request
-	request.setRequestHeader("Content-type", "application/json");
-	request.send(JSON.stringify(data, null, 2))
+	// //Send the proper header information along with the request
+	// request.setRequestHeader("Content-type", "application/json");
+	// request.send(JSON.stringify(data, null, 2))
 }

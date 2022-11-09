@@ -1,22 +1,28 @@
 import formValidator from "../index";
 
 export type customValidatorFunction = ((inputField: field) => boolean)
-type rule = { priority: number, errorMessage: string, validator: customValidatorFunction }
+type error = { priority: number, message: string }
+type rule = { validator: customValidatorFunction, error: error }
+
 
 let baseRules: Map<string, rule> = new Map()
 baseRules.set('required', {
-	priority: 1,
-	errorMessage: 'This is a required field.',
 	validator: (validatorField: field) => {
 		return validatorField.getHTMLField.value !== ''
+	},
+	error: {
+		priority: 1,
+		message: 'This is a required field.'
 	}
 })
 baseRules.set('email', {
-	priority: 0,
-	errorMessage: 'Enter a proper email address.',
 	validator: (validatorField: field) => {
 		const email_regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 		return email_regex.test(validatorField.getHTMLField.value);
+	},
+	error: {
+		priority: 0,
+		message: 'Enter a proper email address.'
 	}
 })
 
@@ -39,7 +45,7 @@ export class field {
 		if (this.htmlField.hasAttribute('vldx-rules')) { 
 			let htmlRules: string = this.htmlField.getAttribute('vldx-rules')
 			htmlRules = (htmlRules?.replace(/\s+/g, ''));
-			
+
 			for (const ruleName of htmlRules?.split(`|`)) {
 				if (baseRules.has(ruleName)) this.rules.set(ruleName, baseRules.get(ruleName)!)
 				else console.log('An invalid rule has been provided.')
@@ -60,9 +66,10 @@ export class field {
 
 		this.rules.forEach((rule) => {
 			validity = validity && rule.validator.call(this, this) ? true : false;
-			if (!validity && rule.priority > loggedPriority ) {
-				loggedPriority = rule.priority
-				errorMessage = rule.errorMessage
+			let error = rule.error
+			if (!validity && error.priority > loggedPriority ) {
+				loggedPriority = error.priority
+				errorMessage = error.message
 			}
 		});
 

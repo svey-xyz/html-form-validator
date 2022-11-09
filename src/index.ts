@@ -1,4 +1,5 @@
 import { field } from './handlers/fieldValidation';
+import { submitForm } from './handlers/submitForm'
 
 type error = {message: string, priority: number}
 
@@ -12,7 +13,7 @@ export default class formValidator {
 	
 	buttonHandler: (e: Event) => void;
 	buttonInput(e: Event): void { 
-		console.log('submitted')
+		submitForm(e, this);
 	};
 
 	/**
