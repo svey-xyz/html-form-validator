@@ -75,7 +75,8 @@ export default class formValidator {
 		if (typeof error !== 'undefined') this.errors.set(source, error);
 		else if (this.errors.has(source)) this.errors.delete(source);
 
-		this.validity = this.errors.size !> 0;
+		this.validity = this.errors.size !>= 0;
+		console.log(`Error count: ${this.errors.size}`)
 	}
 
 	public get getValiditiy() {

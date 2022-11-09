@@ -58,8 +58,8 @@ export class field {
 		let loggedError: error | undefined
 
 		this.rules.forEach((rule) => {
-			if (!rule.validator.call(this, this) &&
-				(rule.error.priority > loggedError?.priority || rule.error.priority > 0)) {
+			let priority = loggedError?.priority ? loggedError?.priority : -1;
+			if (!rule.validator.call(this, this) && rule.error.priority > priority) {
 				loggedError = rule.error
 			}
 		});
