@@ -1,4 +1,4 @@
-import formValidator, { rule, error } from "../index";
+import formValidator, { rule, error, customRulesList } from "../index";
 
 
 let baseRules: Map<string, rule> = new Map()
@@ -30,7 +30,7 @@ export class field {
 	inputHandler: (e: Event) => void;
 	handleInput(e: Event): void { };
 
-	constructor(htmlField: HTMLInputElement, form: formValidator) {
+	constructor(htmlField: HTMLInputElement, form: formValidator, customRules?: customRulesList) {
 		this.inputHandler = this.handleInput.bind(this);
 		this.htmlField = htmlField;
 		this.form = form;
@@ -46,6 +46,11 @@ export class field {
 				if (baseRules.has(ruleName)) this.rules.set(ruleName, baseRules.get(ruleName)!)
 				else console.log('An invalid rule has been provided.')
 			}
+		}
+
+		for (const customRule of customRules) {
+			if (this.rules.has(customRule.ruleName)) throw console.error(`${customRule.ruleName} already exists on this field- ${this.htmlField.id}!`);
+			else this.rules.set(customRule.ruleName, customRule.rule);
 		}
 	}
 

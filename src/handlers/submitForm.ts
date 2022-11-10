@@ -1,4 +1,4 @@
-import formValidator from "..";
+import formValidator, { error } from "..";
 import { load } from 'recaptcha-v3'
 
 export async function submitForm(e: Event, form: formValidator) {
@@ -12,13 +12,21 @@ export async function submitForm(e: Event, form: formValidator) {
 		const recaptcha = await load(recaptchaKey, { autoHideBadge: true })
 		const token = await recaptcha.execute('submit')
 
-		formData.append('token', token)
+		formData.append('g-token', token)
 	}
 
-	console.log(formData)
+	for (const field of form.getFields) {
+		field.fieldValidation()
+	}
 
+	if (form.getHoneyPot?.value !== '') form.updateErrors(form.getHoneyPot?.id, { priority: 2, message: 'Are you a bot? A honey pot field has been filled!' });
+	else form.updateErrors(form.getHoneyPot?.id)
 
-	if (form.getHoneyPot?.value !== '') form.updateValidity = false;
+	let loggedError: error | undefined
+	form.getErrors.forEach(error => {
+		let priority = loggedError?.priority ? loggedError?.priority : -1;
+		if (error.priority > priority) loggedError = error
+	});
 
 
 	// // const url = form.formContainer.getAttribute('action')!;

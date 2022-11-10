@@ -4,6 +4,7 @@ import { submitForm } from './handlers/submitForm'
 export type customValidatorFunction = ((inputField: field) => boolean)
 export type error = { priority: number, message: string }
 export type rule = { validator: customValidatorFunction, error: error }
+export type customRulesList = Array<{ ruleName: string, rule: rule}>
 
 export default class formValidator {
 	private formContainer: HTMLFormElement
@@ -11,7 +12,6 @@ export default class formValidator {
 	private honeyPot: HTMLInputElement | null
 	private recaptchaKey?: string
 	private fields: Array<field> = new Array
-	private validity: boolean = true;
 
 	private errors: Map<string, error> = new Map
 	
@@ -63,24 +63,21 @@ export default class formValidator {
 	 * @param {HTMLElement} inputField
 	 * @memberof formValidator
 	 */
-	private addField(inputField: HTMLInputElement) {
-		this.fields.push(new field(inputField, this))
+	public addField(inputField: HTMLInputElement, customRules?: customRulesList) {
+		this.fields.push(new field(inputField, this, customRules))
 	}
 
 	public set setHoneyPotField(honeyPotField: HTMLInputElement) {
 		this.honeyPot = honeyPotField;
 	}
 
-	public updateErrors(source: string, error?: error) {
-		if (typeof error !== 'undefined') this.errors.set(source, error);
+	public updateErrors(source?: string, error?: error) {
+		if (typeof error !== 'undefined' && typeof source !== 'undefined') this.errors.set(source, error);
 		else if (this.errors.has(source)) this.errors.delete(source);
-
-		this.validity = this.errors.size !>= 0;
-		console.log(`Error count: ${this.errors.size}`)
 	}
 
-	public get getValiditiy() {
-		return this.validity;
+	public get getErrors() {
+		return this.errors;
 	}
 
 	public get getFields(): Array<field> {
