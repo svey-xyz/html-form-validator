@@ -18,12 +18,12 @@ export async function submitForm(e: Event, form: formValidator) {
 		if (error.priority > priority) loggedError = error
 	});
 
-	loggedError ? updateResponse(form, loggedError.message, false) : await submissionFunction(form);
+	loggedError ? updateResponse(form, false, loggedError.message) : await submissionFunction(form);
 }
 
-function updateResponse(form: formValidator, message: string, passStatus: boolean): void {
+function updateResponse(form: formValidator, passStatus: boolean, message?: string): void {
 	let responseField = form.getResponseField;
-	responseField.innerText = message;
+	responseField.innerText = (passStatus && form.getSuccessMessage) ? form.getSuccessMessage : message;
 	passStatus ?
 		(() => { responseField.classList.remove('vldx-failure'); responseField.classList.add('vldx-success') })() :
 		(() => { responseField.classList.remove('vldx-success'); responseField.classList.add('vldx-failure') })();
@@ -61,6 +61,6 @@ let submissionFunction = async (form: formValidator) => {
 
 function responseHandler(form: formValidator, request: XMLHttpRequest) {
 	if (request.readyState === 4) {
-		updateResponse(form, request.response.message, request.status == 200)
+		updateResponse(form, request.status == 200, request.response.message)
 	}
 }
