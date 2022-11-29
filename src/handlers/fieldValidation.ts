@@ -1,4 +1,4 @@
-import formValidator, { rule, error } from "../index";
+import vldx, { rule, error } from "../index";
 
 
 let baseRules: Map<string, rule> = new Map()
@@ -25,14 +25,14 @@ baseRules.set('email', {
 })
 
 export class field {
-	private form: formValidator;
+	private form: vldx;
 	private htmlField: HTMLInputElement;
 	private rules: Map<string, rule> = new Map()
 
 	inputHandler: (e: Event) => void;
 	handleInput(e: Event): void { };
 
-	constructor(htmlField: HTMLInputElement, form: formValidator, customRules: Array<rule> =[]) {
+	constructor(htmlField: HTMLInputElement, form: vldx, customRules: Array<rule> =[]) {
 		this.inputHandler = this.handleInput.bind(this);
 		this.htmlField = htmlField;
 		this.form = form;
@@ -40,8 +40,8 @@ export class field {
 		this.htmlField.addEventListener('blur', this.inputHandler)
 
 
-		if (this.htmlField.hasAttribute('vldx-rules')) { 
-			let htmlRules: string = this.htmlField.getAttribute('vldx-rules')
+		if (this.htmlField.dataset.vldxRules) { 
+			let htmlRules: string = this.htmlField.dataset.vldxRules;
 			htmlRules = (htmlRules?.replace(/\s+/g, ''));
 
 			for (const ruleName of htmlRules?.split(`|`)) {

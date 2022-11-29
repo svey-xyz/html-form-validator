@@ -5,7 +5,8 @@ export type customValidatorFunction = ((inputField: field) => boolean)
 export type error = { priority: number, message: string }
 export type rule = { name: string, validator: customValidatorFunction, error: error }
 
-export default class formValidator {
+
+export default class vldx {
 	private formContainer: HTMLFormElement
 	private submitButton?: HTMLButtonElement
 	private honeyPot: HTMLInputElement | null
@@ -27,19 +28,19 @@ export default class formValidator {
 	 * @param {string} [recaptchaKey] If provided will verify using Google recaptcha V3.
 	 * @memberof formValidator
 	 */
-	constructor(formContainer: HTMLFormElement, recaptchaKey?: string) {
+	constructor() {
 		this.buttonHandler = this.buttonInput.bind(this);
 
-		this.formContainer = formContainer
+		this.formContainer = document.querySelector('.vldx-form')
 
-		this.recaptchaKey = recaptchaKey
+		this.recaptchaKey = this.formContainer.dataset.vldxRecaptcha;
 
 		this.formContainer.setAttribute('novalidate', 'true');
 
 		this.honeyPot = this.formContainer.querySelector('.vldx-honeypot')
 
 		this.responseField = this.formContainer.querySelector('.vldx-response')
-		this.successMessage = this.formContainer.getAttribute('data-vldx-success-message') ? this.formContainer.getAttribute('data-vldx-success-message') : this.successMessage
+		this.successMessage = this.formContainer.dataset.vldxSuccessMessage ? this.formContainer.dataset.vldxSuccessMessage : this.successMessage
 
 		for (const field of this.formContainer.querySelectorAll('.vldx-field')) {
 			this.addField(field as HTMLInputElement)

@@ -1,7 +1,7 @@
-import formValidator, { error } from "..";
+import vldx, { error } from "..";
 import { load } from 'recaptcha-v3'
 
-export async function submitForm(e: Event, form: formValidator) {
+export async function submitForm(e: Event, form: vldx) {
 	e.preventDefault();
 	e.stopPropagation();
 
@@ -21,7 +21,7 @@ export async function submitForm(e: Event, form: formValidator) {
 	loggedError ? updateResponse(form, false, loggedError.message) : await submissionFunction(form);
 }
 
-function updateResponse(form: formValidator, passStatus: boolean, message?: string): void {
+function updateResponse(form: vldx, passStatus: boolean, message?: string): void {
 	let responseField = form.getResponseField;
 	responseField.innerText = (passStatus && form.getSuccessMessage) ? form.getSuccessMessage : message;
 	passStatus ?
@@ -30,7 +30,7 @@ function updateResponse(form: formValidator, passStatus: boolean, message?: stri
 	responseField.classList.remove('hidden');
 }
 
-let submissionFunction = async (form: formValidator) => {
+let submissionFunction = async (form: vldx) => {
 	const formData = new FormData(form.getFormContainer);
 
 	if (typeof form.getRecaptchaKey !== 'undefined') {
@@ -59,7 +59,7 @@ let submissionFunction = async (form: formValidator) => {
 	request.send(JSON.stringify(data, null, 2))
 }
 
-function responseHandler(form: formValidator, request: XMLHttpRequest) {
+function responseHandler(form: vldx, request: XMLHttpRequest) {
 	if (request.readyState === 4) {
 		updateResponse(form, request.status == 200, request.response.message)
 	}
