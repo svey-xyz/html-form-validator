@@ -5,8 +5,19 @@ export type customValidatorFunction = ((inputField: field) => boolean)
 export type error = { priority: number, message: string }
 export type rule = { name: string, validator: customValidatorFunction, error: error }
 
+export function vldxInitAll(): Array<vldx> {
+	let vldxForms = []
+	document.querySelectorAll('.vldx-form').forEach(form => {
+		vldxForms.push(vldxInitForm(form as HTMLFormElement))
+	});
+	return vldxForms;
+}
 
-export default class vldx {
+export function vldxInitForm(form: HTMLFormElement): vldx {
+	return new vldx(form);
+}
+
+export class vldx {
 	private formContainer: HTMLFormElement
 	private submitButton?: HTMLButtonElement
 	private honeyPot: HTMLInputElement | null
@@ -28,10 +39,10 @@ export default class vldx {
 	 * @param {string} [recaptchaKey] If provided will verify using Google recaptcha V3.
 	 * @memberof formValidator
 	 */
-	constructor() {
+	constructor(formContainer: HTMLFormElement) {
 		this.buttonHandler = this.buttonInput.bind(this);
 
-		this.formContainer = document.querySelector('.vldx-form')
+		this.formContainer = formContainer;
 
 		this.recaptchaKey = this.formContainer.dataset.vldxRecaptcha;
 

@@ -1,4 +1,4 @@
-import vldx, { error } from "..";
+import { vldx ,error } from "..";
 import { load } from 'recaptcha-v3'
 
 export async function submitForm(e: Event, form: vldx) {

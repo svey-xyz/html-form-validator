@@ -1,4 +1,4 @@
-import vldx, { rule, error } from "../index";
+import { vldx, rule, error } from "../index";
 
 
 let baseRules: Map<string, rule> = new Map()

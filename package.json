@@ -1,7 +1,7 @@
 {
-	"name": "node-form-validator",
-	"version": "0.0.2",
-	"description": "Validate forms using a set of predefined rules, or write custom rules to integrate.",
+	"name": "vldx",
+	"version": "1.0.0",
+	"description": "A Javascript based HTML form validator that's easy to use, reduces API calls, and supports custom rules.",
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.ts",
