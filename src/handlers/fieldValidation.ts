@@ -1,8 +1,9 @@
-import formValidator, { rule, error, customRulesList } from "../index";
+import formValidator, { rule, error } from "../index";
 
 
 let baseRules: Map<string, rule> = new Map()
 baseRules.set('required', {
+	name: 'required',
 	validator: (validatorField: field) => {
 		return validatorField.getHTMLField.value !== ''
 	},
@@ -12,6 +13,7 @@ baseRules.set('required', {
 	}
 })
 baseRules.set('email', {
+	name: 'email',
 	validator: (validatorField: field) => {
 		const email_regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 		return email_regex.test(validatorField.getHTMLField.value);
@@ -30,7 +32,7 @@ export class field {
 	inputHandler: (e: Event) => void;
 	handleInput(e: Event): void { };
 
-	constructor(htmlField: HTMLInputElement, form: formValidator, customRules?: customRulesList) {
+	constructor(htmlField: HTMLInputElement, form: formValidator, customRules: Array<rule> =[]) {
 		this.inputHandler = this.handleInput.bind(this);
 		this.htmlField = htmlField;
 		this.form = form;
@@ -49,14 +51,9 @@ export class field {
 		}
 
 		for (const customRule of customRules) {
-			if (this.rules.has(customRule.ruleName)) throw console.error(`${customRule.ruleName} already exists on this field- ${this.htmlField.id}!`);
-			else this.rules.set(customRule.ruleName, customRule.rule);
+			if (this.rules.has(customRule.name)) throw new Error(`${customRule.name} already exists on this field- ${this.htmlField.id}!`);
+			else this.rules.set(customRule.name, customRule);
 		}
-	}
-
-	public addCustomRule(ruleName: string, rule: rule) {
-		if (!this.rules.has(ruleName)) this.rules.set(ruleName, rule)
-		else console.error('This field already has a rule with that name.')
 	}
 
 	public fieldValidation(): void {

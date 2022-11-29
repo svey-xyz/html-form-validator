@@ -5,16 +5,6 @@ export async function submitForm(e: Event, form: formValidator) {
 	e.preventDefault();
 	e.stopPropagation();
 
-	const formData = new FormData(form.getFormContainer);
-
-	if (typeof form.getRecaptchaKey !== 'undefined') {
-		const recaptchaKey: string = form.getRecaptchaKey;
-		const recaptcha = await load(recaptchaKey, { autoHideBadge: true })
-		const token = await recaptcha.execute('submit')
-
-		formData.append('g-token', token)
-	}
-
 	for (const field of form.getFields) {
 		field.fieldValidation()
 	}
@@ -28,19 +18,49 @@ export async function submitForm(e: Event, form: formValidator) {
 		if (error.priority > priority) loggedError = error
 	});
 
+	loggedError ? updateResponse(form, loggedError.message, false) : await submissionFunction(form);
+}
 
-	// // const url = form.formContainer.getAttribute('action')!;
-	// const request = new XMLHttpRequest();
-	// request.responseType = "json"
-	// // request.open("POST", url, true);
+function updateResponse(form: formValidator, message: string, passStatus: boolean): void {
+	let responseField = form.getResponseField;
+	responseField.innerText = message;
+	passStatus ?
+		(() => { responseField.classList.remove('vldx-failure'); responseField.classList.add('vldx-success') })() :
+		(() => { responseField.classList.remove('vldx-success'); responseField.classList.add('vldx-failure') })();
+	responseField.classList.remove('hidden');
+}
 
-	// let data: any = {};
+let submissionFunction = async (form: formValidator) => {
+	const formData = new FormData(form.getFormContainer);
 
-	// for (let [key, prop] of formData) {
-	// 	data[key] = prop;
-	// }
+	if (typeof form.getRecaptchaKey !== 'undefined') {
+		const recaptchaKey: string = form.getRecaptchaKey;
+		const recaptcha = await load(recaptchaKey, { autoHideBadge: true })
+		const token = await recaptcha.execute('submit')
 
-	// //Send the proper header information along with the request
-	// request.setRequestHeader("Content-type", "application/json");
-	// request.send(JSON.stringify(data, null, 2))
+		formData.append('g-token', token)
+	}
+
+	const url = form.getFormContainer.getAttribute('action')!;
+	const request = new XMLHttpRequest();
+	request.responseType = "json"
+	request.open("POST", url, true);
+
+	let data: any = {};
+
+	for (let [key, prop] of formData) {
+		data[key] = prop;
+	}
+
+	request.onreadystatechange = () => { responseHandler(form, request) }
+
+	//Send the proper header information along with the request
+	request.setRequestHeader("Content-type", "application/json");
+	request.send(JSON.stringify(data, null, 2))
+}
+
+function responseHandler(form: formValidator, request: XMLHttpRequest) {
+	if (request.readyState === 4) {
+		updateResponse(form, request.response.message, request.status == 200)
+	}
 }

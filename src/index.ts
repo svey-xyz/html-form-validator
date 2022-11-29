@@ -3,8 +3,7 @@ import { submitForm } from './handlers/submitForm'
 
 export type customValidatorFunction = ((inputField: field) => boolean)
 export type error = { priority: number, message: string }
-export type rule = { validator: customValidatorFunction, error: error }
-export type customRulesList = Array<{ ruleName: string, rule: rule}>
+export type rule = { name: string, validator: customValidatorFunction, error: error }
 
 export default class formValidator {
 	private formContainer: HTMLFormElement
@@ -12,7 +11,9 @@ export default class formValidator {
 	private honeyPot: HTMLInputElement | null
 	private recaptchaKey?: string
 	private fields: Array<field> = new Array
+	private responseField?: HTMLElement
 
+	private successMessage: string = "The form has been submitted successfully!"
 	private errors: Map<string, error> = new Map
 	
 	buttonHandler: (e: Event) => void;
@@ -36,6 +37,9 @@ export default class formValidator {
 		this.formContainer.setAttribute('novalidate', 'true');
 
 		this.honeyPot = this.formContainer.querySelector('.vldx-honeypot')
+
+		this.responseField = this.formContainer.querySelector('.vldx-response')
+		this.successMessage = this.formContainer.getAttribute('data-vldx-success-message') ? this.formContainer.getAttribute('data-vldx-success-message') : this.successMessage
 
 		for (const field of this.formContainer.querySelectorAll('.vldx-field')) {
 			this.addField(field as HTMLInputElement)
@@ -63,7 +67,7 @@ export default class formValidator {
 	 * @param {HTMLElement} inputField
 	 * @memberof formValidator
 	 */
-	public addField(inputField: HTMLInputElement, customRules?: customRulesList) {
+	public addField(inputField: HTMLInputElement, customRules?: Array<rule>) {
 		this.fields.push(new field(inputField, this, customRules))
 	}
 
@@ -73,7 +77,7 @@ export default class formValidator {
 
 	public updateErrors(source?: string, error?: error) {
 		if (typeof error !== 'undefined' && typeof source !== 'undefined') this.errors.set(source, error);
-		else if (this.errors.has(source)) this.errors.delete(source);
+		else if (this.errors.has(source as string)) this.errors.delete(source as string);
 	}
 
 	public get getErrors() {
@@ -94,6 +98,14 @@ export default class formValidator {
 
 	public get getHoneyPot(): HTMLInputElement | null {
 		return this.honeyPot;
+	}
+
+	public get getResponseField(): HTMLElement | null {
+		return this.responseField;
+	}
+
+	public get getSuccessMessage(): string {
+		return this.successMessage;
 	}
 	
 }
