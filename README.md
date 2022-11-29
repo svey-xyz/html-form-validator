@@ -54,6 +54,7 @@ If you plan on only using predefined rules this is all the Javascript that is re
 #### HTML
 vldx relies on HTML classes and data to validate your forms.
 
+
 #### Minimal Example Structure
 ```HTML
 <form class="vldx-form" method="POST" action="https://your-api-route/">

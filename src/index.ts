@@ -5,19 +5,32 @@ export type customValidatorFunction = ((inputField: field) => boolean)
 export type error = { priority: number, message: string }
 export type rule = { name: string, validator: customValidatorFunction, error: error }
 
-export function vldxInitAll(): Array<vldx> {
-	let vldxForms = []
-	document.querySelectorAll('.vldx-form').forEach(form => {
-		vldxForms.push(vldxInitForm(form as HTMLFormElement))
-	});
-	return vldxForms;
+export default class vldx {
+	private forms: Array<vldxForm> = [];
+
+	constructor(form?:HTMLFormElement) {
+		if (typeof form == 'undefined') this.vldxInitAll();
+		else this.vldxInitForm(form);
+	}
+
+	vldxInitAll(): void {
+		document.querySelectorAll('.vldx-form').forEach(form => {
+			(this.vldxInitForm(form as HTMLFormElement));
+		});
+	}
+
+	vldxInitForm(form: HTMLFormElement): vldxForm {
+		let vxf = new vldxForm(form)
+		this.forms.push(vxf)
+		return vxf;
+	}
+
+	public get getForms(): Array<vldxForm> {
+		return this.forms;
+	}
 }
 
-export function vldxInitForm(form: HTMLFormElement): vldx {
-	return new vldx(form);
-}
-
-export class vldx {
+export class vldxForm {
 	private formContainer: HTMLFormElement
 	private submitButton?: HTMLButtonElement
 	private honeyPot: HTMLInputElement | null
@@ -43,13 +56,11 @@ export class vldx {
 		this.buttonHandler = this.buttonInput.bind(this);
 
 		this.formContainer = formContainer;
-
-		this.recaptchaKey = this.formContainer.dataset.vldxRecaptcha;
-
 		this.formContainer.setAttribute('novalidate', 'true');
 
+		this.recaptchaKey = this.formContainer.dataset.vldxRecaptcha;
+		
 		this.honeyPot = this.formContainer.querySelector('.vldx-honeypot')
-
 		this.responseField = this.formContainer.querySelector('.vldx-response')
 		this.successMessage = this.formContainer.dataset.vldxSuccessMessage ? this.formContainer.dataset.vldxSuccessMessage : this.successMessage
 

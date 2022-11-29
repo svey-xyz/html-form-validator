@@ -1,12 +1,12 @@
-import { vldx ,error } from "..";
+import { vldxForm ,error } from "..";
 import { load } from 'recaptcha-v3'
 
-export async function submitForm(e: Event, form: vldx) {
+export async function submitForm(e: Event, form: vldxForm) {
 	e.preventDefault();
 	e.stopPropagation();
 
 	for (const field of form.getFields) {
-		field.fieldValidation()
+		field.fieldValidation(field.getHTMLField)
 	}
 
 	if (form.getHoneyPot?.value !== '') form.updateErrors(form.getHoneyPot?.id, { priority: 2, message: 'Are you a bot? A honey pot field has been filled!' });
@@ -21,7 +21,7 @@ export async function submitForm(e: Event, form: vldx) {
 	loggedError ? updateResponse(form, false, loggedError.message) : await submissionFunction(form);
 }
 
-function updateResponse(form: vldx, passStatus: boolean, message?: string): void {
+function updateResponse(form: vldxForm, passStatus: boolean, message?: string): void {
 	let responseField = form.getResponseField;
 	responseField.innerText = (passStatus && form.getSuccessMessage) ? form.getSuccessMessage : message;
 	passStatus ?
@@ -30,7 +30,7 @@ function updateResponse(form: vldx, passStatus: boolean, message?: string): void
 	responseField.classList.remove('hidden');
 }
 
-let submissionFunction = async (form: vldx) => {
+let submissionFunction = async (form: vldxForm) => {
 	const formData = new FormData(form.getFormContainer);
 
 	if (typeof form.getRecaptchaKey !== 'undefined') {
@@ -59,7 +59,7 @@ let submissionFunction = async (form: vldx) => {
 	request.send(JSON.stringify(data, null, 2))
 }
 
-function responseHandler(form: vldx, request: XMLHttpRequest) {
+function responseHandler(form: vldxForm, request: XMLHttpRequest) {
 	if (request.readyState === 4) {
 		updateResponse(form, request.status == 200, request.response.message)
 	}

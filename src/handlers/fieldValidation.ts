@@ -1,4 +1,4 @@
-import { vldx, rule, error } from "../index";
+import { vldxForm, rule, error } from "../index";
 
 
 let baseRules: Map<string, rule> = new Map()
@@ -9,7 +9,7 @@ baseRules.set('required', {
 	},
 	error: {
 		priority: 1,
-		message: 'This is a required field.'
+		message: '$name is a required field.'
 	}
 })
 baseRules.set('email', {
@@ -25,14 +25,14 @@ baseRules.set('email', {
 })
 
 export class field {
-	private form: vldx;
+	private form: vldxForm;
 	private htmlField: HTMLInputElement;
 	private rules: Map<string, rule> = new Map()
 
 	inputHandler: (e: Event) => void;
 	handleInput(e: Event): void { };
 
-	constructor(htmlField: HTMLInputElement, form: vldx, customRules: Array<rule> =[]) {
+	constructor(htmlField: HTMLInputElement, form: vldxForm, customRules: Array<rule> =[]) {
 		this.inputHandler = this.handleInput.bind(this);
 		this.htmlField = htmlField;
 		this.form = form;
@@ -56,7 +56,7 @@ export class field {
 		}
 	}
 
-	public fieldValidation(): void {
+	public fieldValidation(htmlField: HTMLInputElement): void {
 		let loggedError: error | undefined
 
 		this.rules.forEach((rule) => {
@@ -65,6 +65,11 @@ export class field {
 				loggedError = rule.error
 			}
 		});
+
+		loggedError = {
+			priority: loggedError?.priority,
+			message: loggedError?.message.replaceAll('$name', `'${htmlField.name[0].toUpperCase() + htmlField.name.substring(1)}'`)
+		}
 
 		this.htmlField.setCustomValidity(loggedError?.message ? loggedError!.message : '')
 		this.htmlField.reportValidity()
@@ -79,7 +84,7 @@ export class field {
 field.prototype.handleInput = function (e: Event) {
 	switch (e.type) {
 		case ('blur'):
-			this.fieldValidation();
+			this.fieldValidation(e.target);
 			break;
 		default:
 			break;
