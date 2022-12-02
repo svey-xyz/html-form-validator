@@ -5,7 +5,7 @@ declare class field {
     inputHandler: (e: Event) => void;
     handleInput(e: Event): void;
     constructor(htmlField: HTMLInputElement, form: vldxForm, customRules?: Array<rule>);
-    fieldValidation(htmlField: HTMLInputElement): void;
+    fieldValidation(): void;
     get getHTMLField(): HTMLInputElement;
 }
 
@@ -61,6 +61,7 @@ declare class vldxForm {
     addField(inputField: HTMLInputElement, customRules?: Array<rule>): void;
     set setHoneyPotField(honeyPotField: HTMLInputElement);
     updateErrors(source?: string, error?: error): void;
+    validateAll(): void;
     get getErrors(): Map<string, error>;
     get getFields(): Array<field>;
     get getFormContainer(): HTMLFormElement;

@@ -33,7 +33,7 @@ export class field {
 		}
 	}
 
-	public fieldValidation(htmlField: HTMLInputElement): void {
+	public fieldValidation(): void {
 		let loggedError: error | undefined
 
 		this.rules.forEach((rule) => {
@@ -45,7 +45,7 @@ export class field {
 
 		loggedError = {
 			priority: loggedError?.priority,
-			message: loggedError?.message.replaceAll('$name', `'${htmlField.name[0].toUpperCase() + htmlField.name.substring(1)}'`)
+			message: loggedError?.message.replaceAll('$name', `'${this.htmlField.name[0].toUpperCase() + this.htmlField.name.substring(1)}'`)
 		}
 
 		this.htmlField.setCustomValidity(loggedError?.message ? loggedError!.message : '')

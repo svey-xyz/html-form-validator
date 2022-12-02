@@ -103,6 +103,12 @@ export class vldxForm {
 		else if (this.errors.has(source as string)) this.errors.delete(source as string);
 	}
 
+	public validateAll() {
+		for (const field of this.fields) {
+			field.fieldValidation();
+		}
+	}
+
 	public get getErrors() {
 		return this.errors;
 	}

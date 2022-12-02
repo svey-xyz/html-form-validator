@@ -1,6 +1,6 @@
 {
 	"name": "vldx",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "A Javascript based HTML form validator that's easy to use, reduces API calls, and supports custom rules.",
 	"main": "./dist/index.js",
 	"module": "./dist/index.mjs",
@@ -19,23 +19,31 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/svey-xyz/html-form-validator.git"
+		"url": "git+https://github.com/svey-xyz/vldx.git"
 	},
 	"keywords": [
 		"form",
 		"validation",
 		"input",
 		"html-form",
-		"validator"
+		"validator",
+		"front-end",
+		"javascript",
+		"typescript",
+		"tool"
 	],
 	"author": "svey.xyz",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/svey-xyz/html-form-validator/issues"
+		"url": "https://github.com/svey-xyz/vldx/issues"
 	},
-	"homepage": "https://github.com/svey-xyz/html-form-validator#readme",
+	"homepage": "https://github.com/svey-xyz/vldx#readme",
 	"devDependencies": {
+		"@types/node": "^18.11.9",
 		"tsup": "^6.4.0",
 		"typescript": "^4.8.2"
+	},
+	"dependencies": {
+		"recaptcha-v3": "^1.10.0"
 	}
 }

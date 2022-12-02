@@ -5,9 +5,7 @@ export async function submitForm(e: Event, form: vldxForm) {
 	e.preventDefault();
 	e.stopPropagation();
 
-	for (const field of form.getFields) {
-		field.fieldValidation(field.getHTMLField)
-	}
+	form.validateAll();
 
 	if (form.getHoneyPot?.value !== '') form.updateErrors(form.getHoneyPot?.id, { priority: 2, message: 'Are you a bot? A honey pot field has been filled!' });
 	else form.updateErrors(form.getHoneyPot?.id)
@@ -52,15 +50,13 @@ let submissionFunction = async (form: vldxForm) => {
 		data[key] = prop;
 	}
 
-	request.onreadystatechange = () => { responseHandler(form, request) }
+	request.onreadystatechange = () => {
+		if (request.readyState === 4) {
+			updateResponse(form, request.status == 200, request.response.message)
+		}
+	}
 
 	//Send the proper header information along with the request
 	request.setRequestHeader("Content-type", "application/json");
 	request.send(JSON.stringify(data, null, 2))
-}
-
-function responseHandler(form: vldxForm, request: XMLHttpRequest) {
-	if (request.readyState === 4) {
-		updateResponse(form, request.status == 200, request.response.message)
-	}
 }
