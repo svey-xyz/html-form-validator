@@ -1,7 +1,4 @@
 # vldx
-[![Version](https://img.shields.io/npm/v/vldx?style=for-the-badge)](https://www.npmjs.com/package/vldx)
-[![Size](https://img.shields.io/bundlephobia/min/vldx?style=for-the-badge)](https://www.npmjs.com/package/vldx)
-[![Activity](https://img.shields.io/github/last-commit/svey-xyz/vldx/master?style=for-the-badge)](https://github.com/svey-xyz/vldx)
 
 A Javascript based HTML form validator that's easy to use, reduces API calls, and supports custom rules 📑!<br>
 Project still in early stages of development. More features to come soon! 🚀
