@@ -97,7 +97,7 @@ let validator = new vldx();
 }
 
 .vldx-field\:outline:invalid {
-    outline-style: solid;
+	outline-style: solid;
 	outline-width: 2px;
 	outline-color: var(--failureAccent);
 }
