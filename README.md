@@ -1,15 +1,16 @@
+**Development of this project stopped when my stack switched; this project is no longer maintained 😥**<br>
+*If you're intersted in expanding feel free to fork or reach out and I'd be happy to help!*
+
 # vldx
 
 A Javascript based HTML form validator that's easy to use, reduces API calls, and supports custom rules 📑!<br>
 Project still in early stages of development. More features to come soon! 🚀
 
 ## Table of Contents
-<!-- no toc -->
 - [Features](#features)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Example](#example)
-- [Submission](#submission)
 - [Advanced Configuration](#advanced-configuration)
 - [Coming Soon](#coming-soon)
 
@@ -22,7 +23,6 @@ Project still in early stages of development. More features to come soon! 🚀
 - Supports Google reCAPTCHA v3. 
 - Honeypot field for reducing bot spam. 🤖
 - Support for CJS and ESM.
-- Dedicated developer. 🤓
 
 ## Getting Started
 ### Installation
