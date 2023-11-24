@@ -1,4 +1,5 @@
-**Development of this project stopped when my stack switched; this project is no longer maintained 😥**<br>
+**Development of this project stopped when my stack switched; this project is no longer maintained 😥** <br>
+
 *If you're intersted in expanding feel free to fork or reach out and I'd be happy to help!*
 
 # vldx
